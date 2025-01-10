@@ -4,12 +4,12 @@ plugins {
 	id 'io.spring.dependency-management' version '1.1.7'
 }
 
-group = 'afterwork.millionaire'
-version = '0.0.1-SNAPSHOT'
+group = 'afterwork.millionaire.tradingBot'
+version = '0.1'
 
 java {
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(23)
+		languageVersion = JavaLanguageVersion.of(17)
 	}
 }
 
@@ -18,11 +18,36 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	// Spring Boot 기본 스타터
+	implementation 'org.springframework.boot:spring-boot-starter'  // Spring Boot의 기본 기능을 제공하는 스타터
+	// Web 기능을 위한 Spring Boot 스타터
+	implementation 'org.springframework.boot:spring-boot-starter-web'  // REST API 및 웹 애플리케이션을 위한 스타터
+	// Spring Boot Actuator (모니터링, 관리 기능)
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'  // 애플리케이션의 상태 모니터링과 관리 기능을 제공
+	// Spring WebFlux (비동기식 웹 애플리케이션을 위한 스타터)
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'  // 비동기 및 논블로킹 방식의 웹 애플리케이션을 위한 스타터 (트레이딩 봇에는 불필요할 수 있음)
+	// Spring Boot Validation (유효성 검사)
+	implementation 'org.springframework.boot:spring-boot-starter-validation'  // 유효성 검사 기능을 제공하는 스타터
+
+	// Hibernate Validator (jakarta.validation)
+	implementation 'org.hibernate.validator:hibernate-validator'  // Hibernate 기반의 유효성 검사 구현체
+	implementation 'jakarta.validation:jakarta.validation-api'  // Jakarta Validation API (유효성 검사 기능)
+
+	// Lombok (컴파일 타임에 코드 자동 생성)
+	compileOnly 'org.projectlombok:lombok'  // Lombok을 통해 코드에서 반복되는 부분을 자동 생성
+	annotationProcessor 'org.projectlombok:lombok'  // Lombok을 위한 어노테이션 프로세서
+
+	// 테스트 의존성
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'  // Spring Boot 테스트 기능을 위한 스타터
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'  // JUnit 플랫폼을 실행하기 위한 런처
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+// JAR 파일 설정 수정
+bootJar {
+	archiveBaseName = 'afterwork.millionaire.tradingBot'
+	archiveVersion = '0.1'
 }
