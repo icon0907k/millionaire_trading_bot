@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
+import java.util.Objects;
 
 @Service
 public class OauthService {
@@ -35,10 +36,8 @@ public class OauthService {
         // WebClient를 사용하여 POST 요청을 보내고, 그 결과를 비동기적으로 처리
         return WebClientUtils.sendPostRequest(apiProperties.getToken(), input.out("headers"), input.out("request"))
                 .flatMap(response -> {
-                    // 응답에서 필요한 필드만 추출
-                    Map<String, Object> responseBody = response.getBody();
                     // 응답에서 액세스 토큰을 추출하여 BaseInput.authorization에 추가
-                    BaseInput.authorization += String.valueOf(responseBody.get("access_token"));
+                    BaseInput.authorization += Objects.requireNonNull(response.getBody()).get("access_token");
                     // 성공적으로 토큰을 처리한 후 "ok" 반환
                     return Mono.just("ok");
                 });

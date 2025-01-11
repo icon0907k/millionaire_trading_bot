@@ -1,0 +1,62 @@
+{
+  "header": {
+    "grant_type": {
+      "value": "",
+      "korean_title": "권한부여 Type",
+      "type": "String",
+      "required": "Y",
+      "length": "18",
+      "description": "client_credentials"
+    },
+    "appkey": {
+      "value": "",
+      "korean_title": "앱키",
+      "type": "String",
+      "required": "Y",
+      "length": "36",
+      "description": "한국투자증권 홈페이지에서 발급받은 appkey (절대 노출되지 않도록 주의해주세요.)"
+    },
+    "appsecret": {
+      "value": "",
+      "korean_title": "앱시크릿키",
+      "type": "String",
+      "required": "Y",
+      "length": "180",
+      "description": "한국투자증권 홈페이지에서 발급받은 appsecret (절대 노출되지 않도록 주의해주세요.)"
+    }
+  },
+  "body_post": {
+    "access_token": {
+      "value": "",
+      "korean_title": "접근토큰",
+      "type": "String",
+      "required": "Y",
+      "length": "350",
+      "description": "OAuth 토큰이 필요한 API 경우 발급한 Access token. 예) \"eyJ0eXUxMiJ9.eyJz…...................................\""
+    },
+    "token_type": {
+      "value": "",
+      "korean_title": "접근토큰유형",
+      "type": "String",
+      "required": "Y",
+      "length": "20",
+      "description": "접근토큰유형 : \"Bearer\". API 호출 시, 접근토큰유형 \"Bearer\" 입력. 예) \"Bearer eyJ....\""
+    },
+    "expires_in": {
+      "value": "",
+      "korean_title": "접근토큰 유효기간",
+      "type": "Number",
+      "required": "Y",
+      "length": "10",
+      "description": "유효기간(초). 예) 7776000"
+    },
+    "acess_token_token_expired": {
+      "value": "",
+      "korean_title": "접근토큰 유효기간(일시표시)",
+      "type": "String",
+      "required": "Y",
+      "length": "50",
+      "description": "유효기간(년:월:일 시:분:초). 예) \"2022-08-30 08:10:10\""
+    }
+  }
+}

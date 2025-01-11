@@ -48,33 +48,57 @@ public class WebClientUtils {
      * @param bInput 요청 본문에 추가할 키-값 쌍
      * @return 응답을 포함한 Mono 객체 (비동기 응답 처리)
      */
-    public static Mono<ResponseEntity<Map<String, Object>>> sendPostRequest(
+    public static Mono<ResponseEntity<Map<String, String>>> sendPostRequest(
             String url,
-            Map<String, Object> hInput, // 요청 헤더에 추가할 키-값 쌍
-            Map<String, Object> bInput  // 요청 본문에 추가할 키-값 쌍
+            Map<String, String> hInput, // 요청 헤더에 추가할 키-값 쌍
+            Map<String, String> bInput  // 요청 본문에 추가할 키-값 쌍
     ) {
-        try {
-            // WebClient를 사용하여 POST 요청을 보내고 응답을 처리
-            return webClient.post()
-                    .uri(url) // 요청할 URL 설정
-                    .headers(httpHeaders -> httpHeaders.addAll(convertToHttpHeaders(hInput))) // 헤더 설정
-                    .bodyValue(bInput) // 본문 설정
-                    .retrieve() // 요청 실행 및 응답 처리
-                    .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {}) // 응답 데이터를 Map 형태로 변환
-                    .flatMap(responseBody ->
-                            Mono.just(ResponseEntity.ok(responseBody)) // 응답 데이터를 ResponseEntity로 감싸서 반환
-                    )
-                    .onErrorResume(e -> {
-                        // 외부 호출 중 발생한 에러를 로그로 기록하고, ErrorUtils를 통해 에러 응답 생성
-                        log.error("외부 호출 에러: {}", e.getMessage(), e);
-                        return Mono.just(ErrorUtils.createErrorResponse("외부 호출 에러", e));
-                    });
+        // WebClient를 사용하여 POST 요청을 보내고 응답을 처리
+        return webClient.post()
+                .uri(url) // 요청할 URL 설정
+                .headers(httpHeaders -> httpHeaders.addAll(convertToHttpHeaders(hInput))) // 헤더 설정
+                .bodyValue(bInput) // 본문 설정
+                .retrieve() // 요청 실행 및 응답 처리
+                .bodyToMono(new ParameterizedTypeReference<Map<String, String>>() {}) // 응답 데이터를 Map 형태로 변환
+                .flatMap(responseBody ->
+                        Mono.just(ResponseEntity.ok(responseBody)) // 응답 데이터를 ResponseEntity로 감싸서 반환
+                )
+                .onErrorResume(e -> {
+                    // 외부 호출 중 발생한 에러를 로그로 기록하고, ErrorUtils를 통해 에러 응답 생성
+                    log.error("외부 호출 에러: {}", e.getMessage(), e);
+                    return Mono.just(ResponseEntity.status(500).body(Map.of("error", "외부 호출 에러입니다.")));
+                });
+    }
 
-        } catch (Exception e) {
-            // 요청 처리 중 예외 발생 시, 에러 로그 기록
-            log.error("파일 읽기 또는 JSON 파싱 에러: {}", e.getMessage(), e);
-            return Mono.error(new RuntimeException("파일 읽기 또는 JSON 파싱 에러"));
-        }
+    /**
+     * 외부 API에 POST 요청을 보내는 메서드입니다.
+     * 주어진 URL, 헤더, 본문 데이터를 사용하여 POST 요청을 비동기적으로 처리합니다.
+     *
+     * @param url 요청을 보낼 URL (Base URL 이후 경로)
+     * @param hInput 요청 헤더에 추가할 키-값 쌍
+     * @param bInput 요청 본문에 추가할 키-값 쌍
+     * @return 응답을 포함한 Mono 객체 (비동기 응답 처리)
+     */
+    public static Mono<ResponseEntity<Map<String,Object>>> sendPostRequestObType(
+            String url,
+            Map<String, String> hInput, // 요청 헤더에 추가할 키-값 쌍
+            Map<String, String> bInput  // 요청 본문에 추가할 키-값 쌍
+    ) {
+        // WebClient를 사용하여 POST 요청을 보내고 응답을 처리
+        return webClient.post()
+                .uri(url) // 요청할 URL 설정
+                .headers(httpHeaders -> httpHeaders.addAll(convertToHttpHeaders(hInput))) // 헤더 설정
+                .bodyValue(bInput) // 본문 설정
+                .retrieve() // 요청 실행 및 응답 처리
+                .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {}) // 응답 데이터를 Map 형태로 변환
+                .flatMap(responseBody ->
+                        Mono.just(ResponseEntity.ok(responseBody)) // 응답 데이터를 ResponseEntity로 감싸서 반환
+                )
+                .onErrorResume(e -> {
+                    // 외부 호출 중 발생한 에러를 로그로 기록하고, ErrorUtils를 통해 에러 응답 생성
+                    log.error("외부 호출 에러: {}", e.getMessage(), e);
+                    return Mono.just(ResponseEntity.status(500).body(Map.of("error", "외부 호출 에러입니다.")));
+                });
     }
 
     /**
@@ -86,43 +110,65 @@ public class WebClientUtils {
      * @param bInput 요청 본문에 추가할 쿼리 파라미터 키-값 쌍
      * @return 응답을 포함한 Mono 객체 (비동기 응답 처리)
      */
-    public static Mono<ResponseEntity<Map<String, Object>>> sendGetRequest(
+    public static Mono<ResponseEntity<Map<String, String>>> sendGetRequest(
             String url,
-            Map<String, Object> hInput, // 요청 헤더에 추가할 키-값 쌍
-            Map<String, Object> bInput  // 요청 본문에 추가할 쿼리 파라미터 키-값 쌍
+            Map<String, String> hInput, // 요청 헤더에 추가할 키-값 쌍
+            Map<String, String> bInput  // 요청 본문에 추가할 쿼리 파라미터 키-값 쌍
     ) {
-        try {
-            // WebClient를 사용하여 GET 요청을 보내고 응답을 처리
-            return webClient.get()
-                    .uri(uriBuilder -> {
-                        var uriBuilderWithParams = uriBuilder.path(url);
-
-                        // 쿼리 파라미터 추가
-                        bInput.forEach((key, value) -> {
-                            if (value != null) {
-                                uriBuilderWithParams.queryParam(key, value.toString());
-                            }
-                        });
-                        return uriBuilderWithParams.build();
-                    })
-                    .headers(httpHeaders -> httpHeaders.addAll(convertToHttpHeaders(hInput))) // 헤더 설정
-                    .retrieve() // 요청 실행 및 응답 처리
-                    .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {}) // 응답 데이터를 Map 형태로 변환
-                    .flatMap(responseBody ->
-                            Mono.just(ResponseEntity.ok(responseBody)) // 응답 데이터를 ResponseEntity로 감싸서 반환
-                    )
-                    .onErrorResume(e -> {
-                        // 외부 호출 중 발생한 에러를 로그로 기록하고, ErrorUtils를 통해 에러 응답 생성
-                        log.error("외부 호출 에러: {}", e.getMessage(), e);
-                        return Mono.just(ErrorUtils.createErrorResponse("외부 호출 에러", e));
-                    });
-        } catch (Exception e) {
-            // 요청 처리 중 예외 발생 시, 에러 로그 기록
-            log.error("파일 읽기 또는 JSON 파싱 에러: {}", e.getMessage(), e);
-            return Mono.error(new RuntimeException("파일 읽기 또는 JSON 파싱 에러"));
-        }
+        // WebClient를 사용하여 GET 요청을 보내고 응답을 처리
+        return webClient.get()
+                .uri(uriBuilder -> {
+                    var uriBuilderWithParams = uriBuilder.path(url);
+                    // 쿼리 파라미터 추가
+                    bInput.forEach(uriBuilderWithParams::queryParam);
+                    return uriBuilderWithParams.build();
+                })
+                .headers(httpHeaders -> httpHeaders.addAll(convertToHttpHeaders(hInput))) // 헤더 설정
+                .retrieve() // 요청 실행 및 응답 처리
+                .bodyToMono(new ParameterizedTypeReference<Map<String, String>>() {}) // 응답 데이터를 Map 형태로 변환
+                .flatMap(responseBody ->
+                        Mono.just(ResponseEntity.ok(responseBody)) // 응답 데이터를 ResponseEntity로 감싸서 반환
+                )
+                .onErrorResume(e -> {
+                    // 외부 호출 중 발생한 에러를 로그로 기록하고, ErrorUtils를 통해 에러 응답 생성
+                    log.error("외부 호출 에러: {}", e.getMessage(), e);
+                    return Mono.just(ResponseEntity.status(500).body(Map.of("error", "외부 호출 에러입니다.")));
+                });
     }
-
+    /**
+     * 외부 API에 GET 요청을 보내는 메서드입니다.
+     * 요청 URL, 헤더, 쿼리 파라미터 데이터를 사용하여 GET 요청을 비동기적으로 처리합니다.
+     *
+     * @param url 요청을 보낼 URL (Base URL 이후 경로)
+     * @param hInput 요청 헤더에 추가할 키-값 쌍
+     * @param bInput 요청 본문에 추가할 쿼리 파라미터 키-값 쌍
+     * @return 응답을 포함한 Mono 객체 (비동기 응답 처리)
+     */
+    public static Mono<ResponseEntity<Map<String, Object>>> sendGetRequestObtype(
+            String url,
+            Map<String, String> hInput, // 요청 헤더에 추가할 키-값 쌍
+            Map<String, String> bInput  // 요청 본문에 추가할 쿼리 파라미터 키-값 쌍
+    ) {
+        // WebClient를 사용하여 GET 요청을 보내고 응답을 처리
+        return webClient.get()
+                .uri(uriBuilder -> {
+                    var uriBuilderWithParams = uriBuilder.path(url);
+                    // 쿼리 파라미터 추가
+                    bInput.forEach(uriBuilderWithParams::queryParam);
+                    return uriBuilderWithParams.build();
+                })
+                .headers(httpHeaders -> httpHeaders.addAll(convertToHttpHeaders(hInput))) // 헤더 설정
+                .retrieve() // 요청 실행 및 응답 처리
+                .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {}) // 응답 데이터를 Map 형태로 변환
+                .flatMap(responseBody ->
+                        Mono.just(ResponseEntity.ok(responseBody)) // 응답 데이터를 ResponseEntity로 감싸서 반환
+                )
+                .onErrorResume(e -> {
+                    // 외부 호출 중 발생한 에러를 로그로 기록하고, ErrorUtils를 통해 에러 응답 생성
+                    log.error("외부 호출 에러: {}", e.getMessage(), e);
+                    return Mono.just(ResponseEntity.status(500).body(Map.of("error", "외부 호출 에러입니다.")));
+                });
+    }
     /**
      * 주어진 경로에서 JSON 파일을 읽고, 이를 Map으로 변환하는 메서드입니다.
      * 파일 경로를 통해 JSON 파일을 읽고, ObjectMapper를 사용하여 이를 Map 형태로 변환합니다.
@@ -131,7 +177,7 @@ public class WebClientUtils {
      * @return JSON 파일을 Map으로 변환한 데이터
      * @throws Exception 파일 읽기 또는 JSON 파싱 중 발생할 수 있는 예외
      */
-    private static Map<String, Object> readJsonFile(String jsonFilePath) throws Exception {
+    private static Map<String, String> readJsonFile(String jsonFilePath) throws Exception {
         File jsonFile = new File(jsonFilePath);
         // ObjectMapper로 JSON 파일을 Map으로 변환
         return objectMapper.readValue(jsonFile, new TypeReference<>() {});
@@ -144,9 +190,9 @@ public class WebClientUtils {
      * @param map 변환할 Map 객체
      * @return HttpHeaders로 변환된 헤더 객체
      */
-    private static HttpHeaders convertToHttpHeaders(Map<String, Object> map) {
+    private static HttpHeaders convertToHttpHeaders(Map<String, String> map) {
         HttpHeaders headers = new HttpHeaders();
-        map.forEach((key, value) -> headers.add(key, value.toString())); // Map의 각 항목을 HttpHeaders로 변환
+        map.forEach(headers::add); // Map의 각 항목을 HttpHeaders로 변환
         return headers;
     }
 }

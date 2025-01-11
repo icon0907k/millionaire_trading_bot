@@ -1,0 +1,142 @@
+{
+  "header": {
+    "content-type": {
+      "value": "",
+      "korean_title": "컨텐츠타입",
+      "type": "String",
+      "required": "N",
+      "length": "40",
+      "description": "application/json; charset=utf-8"
+    },
+    "authorization": {
+      "value": "",
+      "korean_title": "접근토큰",
+      "type": "String",
+      "required": "Y",
+      "length": "40",
+      "description": "OAuth 토큰이 필요한 API 경우 발급한 Access token. 일반고객(Access token 유효기간 1일, OAuth 2.0의 Client Credentials Grant 절차를 준용) 법인(Access token 유효기간 3개월, Refresh token 유효기간 1년, OAuth 2.0의 Authorization Code Grant 절차를 준용) ※ 토큰 지정시 토큰 타입(\"Bearer\") 지정 필요. 즉, 발급받은 접근토큰 앞에 앞에 \"Bearer\" 붙여서 호출 EX) \"Bearer eyJ..........8GA\""
+    },
+    "appkey": {
+      "value": "",
+      "korean_title": "앱키",
+      "type": "String",
+      "required": "Y",
+      "length": "36",
+      "description": "한국투자증권 홈페이지에서 발급받은 appkey (절대 노출되지 않도록 주의해주세요.)"
+    },
+    "appsecret": {
+      "value": "",
+      "korean_title": "앱시크릿키",
+      "type": "String",
+      "required": "Y",
+      "length": "180",
+      "description": "한국투자증권 홈페이지에서 발급받은 appsecret (절대 노출되지 않도록 주의해주세요.)"
+    },
+    "personalseckey": {
+      "value": "",
+      "korean_title": "고객식별키",
+      "type": "String",
+      "required": "N",
+      "length": "180",
+      "description": "[법인 필수] 제휴사 회원 관리를 위한 고객식별키"
+    },
+    "tr_id": {
+      "value": "",
+      "korean_title": "거래ID",
+      "type": "String",
+      "required": "Y",
+      "length": "13",
+      "description": "[실전투자/모의투자] HHDFS00000300"
+    },
+    "tr_cont": {
+      "value": "",
+      "korean_title": "연속 거래 여부",
+      "type": "String",
+      "required": "N",
+      "length": "1",
+      "description": "공백 : 초기 조회 N : 다음 데이터 조회 (output header의 tr_cont가 M일 경우)"
+    },
+    "custtype": {
+      "value": "",
+      "korean_title": "고객타입",
+      "type": "String",
+      "required": "N",
+      "length": "1",
+      "description": "B : 법인 / P : 개인"
+    },
+    "seq_no": {
+      "value": "",
+      "korean_title": "일련번호",
+      "type": "String",
+      "required": "N",
+      "length": "2",
+      "description": "[법인 필수] 001"
+    },
+    "mac_address": {
+      "value": "",
+      "korean_title": "맥주소",
+      "type": "String",
+      "required": "N",
+      "length": "12",
+      "description": "법인고객 혹은 개인고객의 Mac address 값"
+    },
+    "phone_number": {
+      "value": "",
+      "korean_title": "핸드폰번호",
+      "type": "String",
+      "required": "N",
+      "length": "12",
+      "description": "[법인 필수] 제휴사APP을 사용하는 경우 사용자(회원) 핸드폰번호"
+    },
+    "ip_addr": {
+      "value": "",
+      "korean_title": "접속 단말 공인 IP",
+      "type": "String",
+      "required": "N",
+      "length": "12",
+      "description": "[법인 필수] 사용자(회원)의 IP Address"
+    },
+    "hashkey": {
+      "value": "",
+      "korean_title": "해쉬키",
+      "type": "String",
+      "required": "N",
+      "length": "256",
+      "description": "[POST API 대상] Client가 요청하는 Request Body를 hashkey api로 생성한 Hash값"
+    },
+    "gt_uid": {
+      "value": "",
+      "korean_title": "Global UID",
+      "type": "String",
+      "required": "N",
+      "length": "32",
+      "description": "[법인 필수] 거래고유번호로 사용하므로 거래별로 UNIQUE해야 함"
+    }
+  },
+  "body_get": {
+    "AUTH": {
+      "value": "",
+      "korean_title": "사용자권한정보",
+      "type": "String",
+      "required": "Y",
+      "length": "32",
+      "description": "\"\" (Null 값 설정)"
+    },
+    "EXCD": {
+      "value": "",
+      "korean_title": "거래소코드",
+      "type": "String",
+      "required": "Y",
+      "length": "4",
+      "description": "HKS : 홍콩 NYS : 뉴욕 NAS : 나스닥 AMS : 아멕스 TSE : 도쿄 SHS : 상해 SZS : 심천 SHI : 상해지수 SZI : 심천지수 HSX : 호치민 HNX : 하노이 BAY : 뉴욕(주간) BAQ : 나스닥(주간) BAA : 아멕스(주간)"
+    },
+    "SYMB": {
+      "value": "",
+      "korean_title": "종목코드",
+      "type": "String",
+      "required": "Y",
+      "length": "16",
+      "description": ""
+    }
+  }
+}

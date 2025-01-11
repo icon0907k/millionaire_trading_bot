@@ -1,0 +1,190 @@
+{
+  "header": {
+    "content-type": {
+      "value": "",
+      "korean_title": "컨텐츠타입",
+      "type": "String",
+      "required": "Y",
+      "length": "40",
+      "description": "application/json; charset=utf-8"
+    },
+    "authorization": {
+      "value": "",
+      "korean_title": "접근토큰",
+      "type": "String",
+      "required": "Y",
+      "length": "40",
+      "description": "OAuth 토큰이 필요한 API 경우 발급한 Access token. 일반고객(Access token 유효기간 1일, OAuth 2.0의 Client Credentials Grant 절차를 준용) 법인(Access token 유효기간 3개월, Refresh token 유효기간 1년, OAuth 2.0의 Authorization Code Grant 절차를 준용)"
+    },
+    "appkey": {
+      "value": "",
+      "korean_title": "앱키",
+      "type": "String",
+      "required": "Y",
+      "length": "36",
+      "description": "한국투자증권 홈페이지에서 발급받은 appkey (절대 노출되지 않도록 주의해주세요.)"
+    },
+    "appsecret": {
+      "value": "",
+      "korean_title": "앱시크릿키",
+      "type": "String",
+      "required": "Y",
+      "length": "180",
+      "description": "한국투자증권 홈페이지에서 발급받은 appsecret (절대 노출되지 않도록 주의해주세요.)"
+    },
+    "personalseckey": {
+      "value": "",
+      "korean_title": "고객식별키",
+      "type": "String",
+      "required": "N",
+      "length": "180",
+      "description": "[법인 필수] 제휴사 회원 관리를 위한 고객식별키"
+    },
+    "tr_id": {
+      "value": "",
+      "korean_title": "거래ID",
+      "type": "String",
+      "required": "Y",
+      "length": "13",
+      "description": "HHDFS76950200"
+    },
+    "tr_cont": {
+      "value": "",
+      "korean_title": "연속 거래 여부",
+      "type": "String",
+      "required": "N",
+      "length": "1",
+      "description": "공백 : 초기 조회, N : 다음 데이터 조회"
+    },
+    "custtype": {
+      "value": "",
+      "korean_title": "고객 타입",
+      "type": "String",
+      "required": "N",
+      "length": "1",
+      "description": "B : 법인, P : 개인"
+    },
+    "seq_no": {
+      "value": "",
+      "korean_title": "일련번호",
+      "type": "String",
+      "required": "N",
+      "length": "2",
+      "description": "[법인 필수] 001"
+    },
+    "mac_address": {
+      "value": "",
+      "korean_title": "맥주소",
+      "type": "String",
+      "required": "N",
+      "length": "12",
+      "description": "법인고객 혹은 개인고객의 Mac address 값"
+    },
+    "phone_number": {
+      "value": "",
+      "korean_title": "핸드폰번호",
+      "type": "String",
+      "required": "N",
+      "length": "12",
+      "description": "[법인 필수] 제휴사APP을 사용하는 경우 사용자(회원) 핸드폰번호"
+    },
+    "ip_addr": {
+      "value": "",
+      "korean_title": "접속 단말 공인 IP",
+      "type": "String",
+      "required": "N",
+      "length": "12",
+      "description": "[법인 필수] 사용자(회원)의 IP Address"
+    },
+    "hashkey": {
+      "value": "",
+      "korean_title": "해쉬키",
+      "type": "String",
+      "required": "N",
+      "length": "256",
+      "description": "[POST API 대상] Client가 요청하는 Request Body를 hashkey api로 생성한 Hash값"
+    },
+    "gt_uid": {
+      "value": "",
+      "korean_title": "Global UID",
+      "type": "String",
+      "required": "N",
+      "length": "32",
+      "description": "[법인 필수] 거래고유번호로 사용하므로 거래별로 UNIQUE해야 함"
+    }
+  },
+  "body_get": {
+    "AUTH": {
+      "value": "",
+      "korean_title": "사용자권한정보",
+      "type": "String",
+      "required": "Y",
+      "length": "32",
+      "description": "\"\" (공백으로 입력)"
+    },
+    "EXCD": {
+      "value": "",
+      "korean_title": "거래소코드",
+      "type": "String",
+      "required": "Y",
+      "length": "4",
+      "description": "NYS : 뉴욕, NAS : 나스닥, AMS : 아멕스, HKS : 홍콩, SHS : 상해, SZS : 심천, HSX : 호치민, HNX : 하노이, TSE : 도쿄"
+    },
+    "SYMB": {
+      "value": "",
+      "korean_title": "종목코드",
+      "type": "String",
+      "required": "Y",
+      "length": "16",
+      "description": "종목코드(ex. TSLA)"
+    },
+    "NMIN": {
+      "value": "",
+      "korean_title": "분갭",
+      "type": "String",
+      "required": "Y",
+      "length": "4",
+      "description": "분단위(1: 1분봉, 2: 2분봉, ...)"
+    },
+    "PINC": {
+      "value": "",
+      "korean_title": "전일포함여부",
+      "type": "String",
+      "required": "Y",
+      "length": "1",
+      "description": "0:당일 1:전일포함"
+    },
+    "NEXT": {
+      "value": "",
+      "korean_title": "다음여부",
+      "type": "String",
+      "required": "Y",
+      "length": "1",
+      "description": "처음조회 시, \"\" 공백 입력, 다음조회 시, \"1\" 입력"
+    },
+    "NREC": {
+      "value": "",
+      "korean_title": "요청갯수",
+      "type": "String",
+      "required": "Y",
+      "length": "4",
+      "description": "레코드요청갯수 (최대 120)"
+    },
+    "FILL": {
+      "value": "",
+      "korean_title": "미체결채움구분",
+      "type": "String",
+      "required": "Y",
+      "length": "1",
+      "description": "\"\" 공백으로 입력"
+    },
+    "KEYB": {
+      "value": "",
+      "korean_title": "NEXT KEY BUFF",
+      "type": "String",
+      "required": "Y",
+      "length": "32",
+      "description": "처음 조회 시, \"\" 공백 입력, 다음 조회 시, 이전 조회 결과의 마지막 분봉 데이터를 이용하여, 1분 전 혹은 n분 전의 시간을 입력 (형식: YYYYMMDDHHMMSS, ex. 20241014140100)"
+    }
+  }
+}

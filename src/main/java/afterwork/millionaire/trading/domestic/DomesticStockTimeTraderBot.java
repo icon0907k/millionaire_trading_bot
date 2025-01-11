@@ -80,20 +80,20 @@ public class DomesticStockTimeTraderBot {
     /**
      * 매일 오전 8시 35분에 OAuth 토큰 발급 작업을 실행하는 메서드
      */
-    @Scheduled(cron = "00 35 8 * * *", zone = "Asia/Seoul")
+    @Scheduled(cron = "0 43 18 * * *", zone = "Asia/Seoul")
     public void issueToken() {
         log.info("토큰 발급 작업 수행 중...");
         oauthService.getAccessToken()
-                .doOnNext(token -> log.info("토큰 발급 완료: {}", token))
+                .doOnNext(token -> log.info("토큰 발급 완료."))
                 .subscribe(); // 비동기로 토큰 발급 수행
     }
 
     /**
      * 매일 오전 11시 29분 57초에 매수 작업을 실행하는 메서드
      */
-    @Scheduled(cron = "57 29 21 * * *", zone = "Asia/Seoul")
+    @Scheduled(cron = "57 29 11 * * *", zone = "Asia/Seoul")
     public void performTradingTask() {
-        log.info("트레이딩 매수 작업 수행 중...");
+        log.info("트레이딩 국내주식 매수 작업 수행 중...");
         step1(); // 매수 작업의 첫 번째 단계 실행
     }
 
@@ -103,37 +103,30 @@ public class DomesticStockTimeTraderBot {
     public void step1() {
         domesticStockTimeTraderBotService.getDomesticStockTimeRangeQuery()
                 .flatMap(status -> {
-                    BaseInput.dStatus = status; // 상태 저장
-                    log.info("step1: 상태 조회 완료: {}", status);
+                    log.info("상태 조회 완료: {}", status);
                     return step2(); // Step 2로 이동
-                })
-                .doOnNext(status -> log.info("국내주식 상태 : {}", status))
-                .subscribe(); // 비동기로 실행
+                }).subscribe(); // 비동기로 실행
     }
 
     /**
      * 매수 작업 Step 2: 구매 가능 수량 조회 및 매수 실행
      * @return Mono<Void> 비동기 작업 결과
      */
-    public Mono<Void> step2() {
-        log.info("step2 실행 시작");
+    public Mono<String> step2() {
         return Mono.delay(Duration.ofSeconds(1)) // 대기 시간 추가
                 .then(domesticStockTimeTraderBotService.getDomesticStockBuyableAmount()) // 구매 가능 수량 조회
                 .flatMap(amount -> {
                     log.info("국내주식 구매가능 수량 : {}", amount);
-                    BaseInput.dAmount = amount; // 수량 저장
                     return Mono.delay(Duration.ofSeconds(1))
                             .then(domesticStockTimeTraderBotService.domesticStockTradingOrder("1")); // 매수 주문 실행
                 })
-                .doOnNext(orderResponse -> log.info("국내주식 매수 완료: {}", orderResponse))
-                .then()
-                .doFinally(signal -> log.info("step2 실행 완료"));
+                .doOnNext(orderResponse -> log.info("국내주식 매수 완료: {}", orderResponse));
     }
 
     /**
      * 매일 오후 1시 59분 59초에 매도 작업을 실행하는 메서드
      */
-    @Scheduled(cron = "59 59 13 * * *", zone = "Asia/Seoul")
+    @Scheduled(cron = "59 59 1 * * *", zone = "Asia/Seoul")
     public void performSellTask() {
         log.info("트레이딩 매도 작업 수행 중...");
         domesticStockTimeTraderBotService.domesticStockTradingOrder("2") // 매도 주문 실행
