@@ -80,7 +80,7 @@ public class DomesticStockTimeTraderBot {
     /**
      * 매일 오전 8시 35분에 OAuth 토큰 발급 작업을 실행하는 메서드
      */
-    @Scheduled(cron = "0 43 18 * * *", zone = "Asia/Seoul")
+    @Scheduled(cron = "0 0 11 * * *", zone = "Asia/Seoul")
     public void issueToken() {
         log.info("토큰 발급 작업 수행 중...");
         oauthService.getAccessToken()
@@ -126,7 +126,7 @@ public class DomesticStockTimeTraderBot {
     /**
      * 매일 오후 1시 59분 59초에 매도 작업을 실행하는 메서드
      */
-    @Scheduled(cron = "59 59 1 * * *", zone = "Asia/Seoul")
+    @Scheduled(cron = "59 59 13 * * *", zone = "Asia/Seoul")
     public void performSellTask() {
         log.info("트레이딩 매도 작업 수행 중...");
         domesticStockTimeTraderBotService.domesticStockTradingOrder("2") // 매도 주문 실행

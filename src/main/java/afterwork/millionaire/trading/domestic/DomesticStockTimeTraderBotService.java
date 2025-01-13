@@ -58,10 +58,10 @@ public class DomesticStockTimeTraderBotService {
         input.put("request","FID_ETC_CLS_CODE","");
         input.put("request","FID_COND_MRKT_DIV_CODE","J");
         input.put("request","FID_INPUT_ISCD", BaseInput.CO233740);
-        input.put("request","FID_INPUT_HOUR_1","113900");
+        input.put("request","FID_INPUT_HOUR_1","112900");
         input.put("request","FID_PW_DATA_INCU_YN","N");
         input.put("request","TIME1","090000");
-        input.put("request","TIME2","113900");
+        input.put("request","TIME2","112900");
         // WebClient를 사용하여 GET 요청을 보내고 응답을 처리
         return WebClientUtils.sendGetRequest(
                         apiProperties.getDomesticInquireTimeItemchartpriceTimerangQuery(),
@@ -94,13 +94,16 @@ public class DomesticStockTimeTraderBotService {
         input.put("request", "ORD_QTY", BaseInput.dAmount);
         input.put("request", "ORD_UNPR", "0");
 
-        // WebClient를 사용하여 POST 요청을 보내고 응답을 처리
-        return WebClientUtils.sendPostRequest(apiProperties.getDomesticTradingOrder(),
-                        input.out("headers"), input.out("request"))
-                .flatMap(response -> {
-                    // 응답에서 결과 코드(rt_cd) 추출
-                    return Mono.just(Objects.requireNonNull(response.getBody()).get("rt_cd"));
-                });
+        return WebClientUtils.sendPostRequestObType(
+                apiProperties.getDomesticTradingOrder(),
+                input.out("headers"),
+                input.out("request")
+        ).flatMap(response -> {
+            // 응답 데이터에서 결과 코드 추출 및 반환
+            Map<String, Object> responseBody = response.getBody();
+            Object rtCd = responseBody.get("rt_cd");
+            return Mono.just((String) rtCd);
+        });
     }
 
     /**
@@ -113,7 +116,7 @@ public class DomesticStockTimeTraderBotService {
         if ("1".equals(dStatus)) {
             return BaseInput.CO233740;
         } else if ("2".equals(dStatus)) {
-            return BaseInput.COQ520057;
+            return BaseInput.CO252670;
         } else {
             return null;
         }
