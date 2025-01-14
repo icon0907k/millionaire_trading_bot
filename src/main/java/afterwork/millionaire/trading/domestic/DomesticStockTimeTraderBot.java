@@ -80,7 +80,7 @@ public class DomesticStockTimeTraderBot {
     /**
      * 매일 오전 8시 35분에 OAuth 토큰 발급 작업을 실행하는 메서드
      */
-    @Scheduled(cron = "0 0 11 * * *", zone = "Asia/Seoul")
+    @Scheduled(cron = "30 2 13 * * *", zone = "Asia/Seoul")
     public void issueToken() {
         log.info("토큰 발급 작업 수행 중...");
         oauthService.getAccessToken()

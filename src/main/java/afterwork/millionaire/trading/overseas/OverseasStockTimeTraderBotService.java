@@ -27,9 +27,9 @@ public class OverseasStockTimeTraderBotService {
 
         // API 요청에 필요한 파라미터 설정
         Input input = createInput("HHDFS00000300");
+        input.put("request", "SYMB", getSymbByStatus(BaseInput.oStatus)); // 종목 코드
         input.put("request", "AUTH", "");
         input.put("request", "EXCD", BaseInput.EXCD); // 거래소 코드
-        input.put("request", "SYMB", getSymbByStatus(BaseInput.oStatus)); // 종목 코드
 
         return WebClientUtils.sendGetRequestObtype(
                 apiProperties.getOverseasPrice(),
@@ -57,8 +57,10 @@ public class OverseasStockTimeTraderBotService {
         input.put("request", "EXCD", BaseInput.EXCD);
         input.put("request", "SYMB", "TQQQ"); // 종목 코드
         input.put("request", "PINC", "1"); // 가격 간격
-        input.put("request", "NEXT", "");
+        input.put("request", "NEXT", ""); // 가격 간격
         input.put("request", "NREC", "120"); // 요청 데이터 수
+        input.put("request", "FILL", "");
+        input.put("request", "KEYB", "");
         input.put("request", "TIME1", "233000"); // 시작 시간
         input.put("request", "TIME2", "020000"); // 종료 시간
 
@@ -83,6 +85,7 @@ public class OverseasStockTimeTraderBotService {
         Input input = createInput("VTTS3007R");
         input.put("headers", "tr_cont", "");
         input.put("headers", "custtype", "P");
+        input.put("headers", "seq_no", "");
         input.put("request", "CANO", BaseInput.CANO); // 계좌 번호
         input.put("request", "ACNT_PRDT_CD", BaseInput.ACNT_PRDT_CD); // 계좌 상품 코드
         input.put("request", "OVRS_EXCG_CD", BaseInput.OVRS_EXCG_CD); // 해외 거래소 코드
@@ -121,6 +124,7 @@ public class OverseasStockTimeTraderBotService {
         input.put("request", "ORD_QTY", BaseInput.ORD_QTY); // 주문 수량
         input.put("request", "OVRS_ORD_UNPR", BaseInput.OVRS_ORD_UNPR); // 주문 가격
         input.put("request", "SLL_TYPE", orderType); // 매수/매도 타입
+        input.put("request", "ORD_SVR_DVSN_CD", "0");
         input.put("request", "ORD_DVSN", "00");
 
         return WebClientUtils.sendPostRequestObType(
