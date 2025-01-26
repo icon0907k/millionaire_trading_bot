@@ -1,4 +1,4 @@
-package afterwork.millionaire.mail;
+package afterwork.millionaire.documentation.reports;
 
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Value;
