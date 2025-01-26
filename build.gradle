@@ -40,6 +40,9 @@ dependencies {
 	// 테스트 의존성
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'  // Spring Boot 테스트 기능을 위한 스타터
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'  // JUnit 플랫폼을 실행하기 위한 런처
+
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
 }
 
 tasks.named('test') {
