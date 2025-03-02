@@ -8,29 +8,47 @@ import java.time.ZonedDateTime;
 @Service
 public class SummerTimeCheckSchedule {
 
-    // 장 시작 시간을 위한 크론식을 반환하는 메서드
-    public String getStartCron() {
-        boolean isDaylightSavingTime = isDaylightSavingTime();  // 썸머타임 여부 확인
-        // 썸머타임 적용 시 한국 시간으로 10:30 PM (미국 동부 시간 9:30 AM, EDT)
-        // 썸머타임이 아닐 경우 한국 시간으로 11:30 PM (미국 동부 시간 9:30 AM, EST)
-        return isDaylightSavingTime ? "0 30 22 * * *" : "0 30 23 * * *";
+    /**
+     * 장 시간 조건 확인 메서드.
+     * 썸머타임 여부에 따라 시작 및 종료 시간을 비교.
+     */
+    public boolean isMarketOpen() {
+        ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
+        ZonedDateTime start = getMarketStartTime();
+        ZonedDateTime end = getMarketEndTime();
+
+        return now.isAfter(start) && now.isBefore(end);
     }
 
-    // 장 종료 시간을 위한 크론식을 반환하는 메서드
-    public String getEndCron() {
-        boolean isDaylightSavingTime = isDaylightSavingTime();  // 썸머타임 여부 확인
-        // 썸머타임 적용 시 한국 시간으로 5:00 AM (미국 동부 시간 4:00 PM, EDT)
-        // 썸머타임이 아닐 경우 한국 시간으로 6:00 AM (미국 동부 시간 4:00 PM, EST)
-        return isDaylightSavingTime ? "0 0 5 * * *" : "0 0 6 * * *";
+    /**
+     * 장 시작 시간 반환 메서드.
+     */
+    public ZonedDateTime getMarketStartTime() {
+        boolean isDaylightSavingTime = isDaylightSavingTime();
+        return ZonedDateTime.now(ZoneId.of("Asia/Seoul"))
+                .withHour(isDaylightSavingTime ? 22 : 23)
+                .withMinute(30)
+                .withSecond(0);
     }
 
-    // 현재 시간이 썸머타임(일광 절약 시간제) 적용 여부를 확인하는 메서드
-    private boolean isDaylightSavingTime() {
-        // "America/New_York" 시간대를 기준으로 현재 시간이 썸머타임 적용 여부를 확인
+    /**
+     * 장 종료 시간 반환 메서드.
+     */
+    public ZonedDateTime getMarketEndTime() {
+        boolean isDaylightSavingTime = isDaylightSavingTime();
+        return ZonedDateTime.now(ZoneId.of("Asia/Seoul"))
+                .withHour(isDaylightSavingTime ? 5 : 6)
+                .withMinute(0)
+                .withSecond(0)
+                .plusDays(1); // 종료 시간이 다음 날일 수 있음
+    }
+
+    /**
+     * 썸머타임 적용 여부 확인 메서드.
+     */
+    public boolean isDaylightSavingTime() {
         ZonedDateTime now = ZonedDateTime.now(ZoneId.of("America/New_York"));
-        // ZonedDateTime 객체의 getZone().getRules().isDaylightSavings() 메서드를 사용하여 현재 시간이 썸머타임인지 확인
         return now.getZone().getRules().isDaylightSavings(now.toInstant());
     }
-
 
 }

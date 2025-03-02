@@ -1,44 +1,57 @@
 package afterwork.millionaire.indicator;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import java.text.DecimalFormat;
 import java.util.List;
 
 @Service
+@Slf4j
 public class RSICalculatorService {
 
-    private static final int PERIOD = 14; // 14일 기준 RSI
-
-    public double calculateRSI(List<Double> closingPrices) {
-        if (closingPrices == null || closingPrices.size() < PERIOD) {
-            throw new IllegalArgumentException("주어진 데이터가 충분하지 않습니다.");
+    public static double calculateRSI(List<Double> closePrices, int period) {
+        if (closePrices == null || closePrices.size() < period + 1) {
+            log.info("RSI 계산을 위한 데이터가 부족합니다. 최소 " + (period + 1) + "개의 가격이 필요합니다.");
+            return -1; // 오류 표시 값
         }
 
-        // 1. 가격 변화 계산 (Gain, Loss)
-        double gain = 0.0;
-        double loss = 0.0;
+        double gainSum = 0;
+        double lossSum = 0;
+        double lastRSI = 0;
 
-        for (int i = 1; i <= PERIOD; i++) {
-            double priceChange = closingPrices.get(i) - closingPrices.get(i - 1);
-            if (priceChange > 0) {
-                gain += priceChange;
+        // 초기 평균 상승/하락 계산 (첫 번째 변화값부터 계산, period-1개만 포함)
+        for (int i = 1; i < period; i++) { // i < period로 수정
+            double change = closePrices.get(i) - closePrices.get(i - 1);
+            if (change > 0) {
+                gainSum += change;
             } else {
-                loss -= priceChange; // Loss는 음수이므로 - 값을 더합니다.
+                lossSum += Math.abs(change);
             }
         }
 
-        // 2. 평균 Gain, 평균 Loss 계산
-        double averageGain = gain / PERIOD;
-        double averageLoss = loss / PERIOD;
+        // 초기 평균 상승/하락 계산
+        double avgGain = gainSum / (period - 1);  // period - 1로 수정
+        double avgLoss = lossSum / (period - 1);  // period - 1로 수정
 
-        // 3. RS (Relative Strength) 계산
-        double rs = averageGain / averageLoss;
+        // RSI 계산
+        for (int i = period; i < closePrices.size(); i++) { // i < closePrices.size()로 수정
+            double change = closePrices.get(i) - closePrices.get(i - 1);
+            double gain = Math.max(change, 0);
+            double loss = Math.abs(Math.min(change, 0));
 
-        // 4. RSI 계산
-        double rsi = 100 - (100 / (1 + rs));
+            avgGain = ((avgGain * (period - 1)) + gain) / period;
+            avgLoss = ((avgLoss * (period - 1)) + loss) / period;
 
-        // 5. 소수점 두 자리로 포맷팅
-        DecimalFormat df = new DecimalFormat("#.##");
-        return Double.parseDouble(df.format(rsi));
+            double rs = (avgLoss == 0) ? 100 : avgGain / avgLoss;
+            double rsi = 100 - (100 / (1 + rs));
+
+            lastRSI = rsi; // 마지막 RSI 값 저장
+        }
+
+        // 마지막 RSI 값은 소수점 두 자리로 반올림
+        // 소수점 두 자리까지 반올림
+        return Math.round(lastRSI * 100.0) / 100.0;
     }
+
+
 }
