@@ -37,6 +37,7 @@ public class ApiProperties {
     private String overseasInquireTimeItemchartpriceTimerangQuery; // 해외주식 특정시간 분봉조회 URI
     private String overseasTradingInquirePsamount; // 해외주식 매수가능금액조회 URI
     private String overseasTradingOrder; // 해외주식 주문 URI
+    private String overseasTradingInquireBalance; // 해외주식 잔고 URI
 
     // 국내 주식 관련 URI들
     private String domesticPrice; // 국내주식 현재체결가 URI
