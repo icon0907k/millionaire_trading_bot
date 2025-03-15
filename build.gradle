@@ -28,6 +28,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'  // 비동기 및 논블로킹 방식의 웹 애플리케이션을 위한 스타터 (트레이딩 봇에는 불필요할 수 있음)
 	// Spring Boot Validation (유효성 검사)
 	implementation 'org.springframework.boot:spring-boot-starter-validation'  // 유효성 검사 기능을 제공하는 스타터
+	// 이메일 전송 기능
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	// Spring Boot view
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
 	// Hibernate Validator (jakarta.validation)
 	implementation 'org.hibernate.validator:hibernate-validator'  // Hibernate 기반의 유효성 검사 구현체
@@ -41,7 +45,6 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'  // Spring Boot 테스트 기능을 위한 스타터
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'  // JUnit 플랫폼을 실행하기 위한 런처
 
-	implementation 'org.springframework.boot:spring-boot-starter-mail'
 
 }
 
