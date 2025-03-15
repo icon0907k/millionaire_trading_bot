@@ -22,7 +22,9 @@ public class OverseasStockRsiTraderBot {
             40.0, 11.0, // RSI <= 40: 11% 투자
             35.0, 13.0, // RSI <= 35: 13% 투자
             30.0, 15.0, // RSI <= 30: 15% 투자
-            25.0, 17.0  // RSI <= 25: 17% 투자
+            25.0, 17.0,  // RSI <= 25: 17% 투자
+            20.0, 19.0,  // RSI <= 20: 19% 투자
+            15.0, 21.0  // RSI <= 15: 21% 투자
     );
 
     private final OverseasStockTimeTraderBotService overseasStockTimeTraderBotService;
