@@ -122,14 +122,14 @@ public class OverseasStockTimeTraderBot {
     }
 
     // 주식시장 장 시작 시간에 대한 스케줄 메서드
-    @Scheduled(cron = "#{@summerTimeCheckSchedule.getStartCron()}", zone = "Asia/Seoul")  // 동적으로 크론식 설정
+    //@Scheduled(cron = "#{@summerTimeCheckSchedule.getStartCron()}", zone = "Asia/Seoul")  // 동적으로 크론식 설정
     public void marketOpen() {
         System.out.println("주식시장 시작");
         // 여기에 장 시작에 대한 처리 로직을 작성합니다.
     }
 
     // 주식시장 장 종료 시간에 대한 스케줄 메서드
-    @Scheduled(cron = "#{@summerTimeCheckSchedule.getEndCron()}", zone = "Asia/Seoul")  // 동적으로 크론식 설정
+    //@Scheduled(cron = "#{@summerTimeCheckSchedule.getEndCron()}", zone = "Asia/Seoul")  // 동적으로 크론식 설정
     public void marketClose() {
         System.out.println("주식시장 종료");
         // 여기에 장 종료에 대한 처리 로직을 작성합니다.
