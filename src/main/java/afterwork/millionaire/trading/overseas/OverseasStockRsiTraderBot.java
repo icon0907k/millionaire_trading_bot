@@ -33,7 +33,7 @@ public class OverseasStockRsiTraderBot {
     /**
      * 매일 자정 직후 OAuth 액세스 토큰을 발급받는 스케줄러
      */
-    @Scheduled(cron = "22 0 0 * * *", zone = "Asia/Seoul")
+    @Scheduled(cron = "0 15 16 * * *", zone = "Asia/Seoul")
     public void issueToken() {
         log.info("OAuth 토큰 발급 시작...");
         oauthService.getAccessToken()
@@ -45,7 +45,7 @@ public class OverseasStockRsiTraderBot {
     /**
      * 장 시간(20:29 KST)에 RSI 기반 투자 로직을 실행하는 스케줄러
      */
-    @Scheduled(cron = "30 29 20 * * *", zone = "Asia/Seoul")
+    @Scheduled(cron = "30 15 16 * * *", zone = "Asia/Seoul")
     public void executeMarketLogic() {
         log.info("장 시간 RSI 트레이딩 로직 실행: {}", ZonedDateTime.now());
 

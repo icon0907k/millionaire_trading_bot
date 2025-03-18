@@ -13,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -92,8 +89,8 @@ public class OverseasStockTimeTraderBotService {
         input.put("headers", "custtype", "P");
         input.put("request", "AUTH", "");
         input.put("request", "EXCD", BaseInput.EXCD);
-        input.put("request", "SYMB", "TQQQ"); // 종목 코드
-        input.put("request", "NMIN", "1480");
+        input.put("request", "SYMB", "QQQM"); // 종목 코드
+        input.put("request", "NMIN", "1440");
         input.put("request", "PINC", "1"); // 전일포함여부(0:당일 1:전일포함)
         input.put("request", "NEXT", ""); // 다음여부 ""(Null 값 설정)
         input.put("request", "NREC", "15"); // 요청 데이터 수
@@ -112,6 +109,7 @@ public class OverseasStockTimeTraderBotService {
                 for (Map<String, Object> datum : data) {
                     closingPrices.add( Double.parseDouble((String) datum.get("last")));
                 }
+                Collections.reverse(closingPrices);
             return Mono.just(closingPrices);
         });
     }

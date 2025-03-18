@@ -14,7 +14,7 @@ public class RSICalculatorService {
             log.info("RSI 계산을 위한 데이터가 부족합니다. 최소 " + (period + 1) + "개의 가격이 필요합니다.");
             return -1; // 오류 표시 값
         }
-
+        log.info("입력 데이터: " + closePrices);
         double gainSum = 0;
         double lossSum = 0;
         double lastRSI = 0;
