@@ -16,7 +16,7 @@ import java.util.Map;
 @Slf4j
 @RequiredArgsConstructor
 public class OverseasStockRsiTraderBot {
-//..
+
     private static final Map<Double, Double> RSI_INVESTMENT_THRESHOLDS = Map.of(
             50.0, 7.0,  // RSI <= 50: 7% 투자
             45.0, 9.0,  // RSI <= 45: 9% 투자
